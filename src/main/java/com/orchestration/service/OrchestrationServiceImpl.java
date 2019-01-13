@@ -1,6 +1,5 @@
 package com.orchestration.service;
 
-import org.apache.log4j.spi.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,8 +98,7 @@ public class OrchestrationServiceImpl implements OrchestrationService {
 	}
 
 	@Override
-	public String startOrchestratio() {
-		// TODO Auto-generated method stub
+	public String startOrchestration() {
 		return null;
 	}
 
