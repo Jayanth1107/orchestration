@@ -7,5 +7,6 @@ import com.orchestration.entity.Orchestration;
 public interface OrchestrationRepository extends JpaRepository<Orchestration, Integer> {
 	
 	public Orchestration findAllByOrderBySourceProcessKeyAsc();
+	public Orchestration findOneBySourceProcessKey(String key);
 
 }

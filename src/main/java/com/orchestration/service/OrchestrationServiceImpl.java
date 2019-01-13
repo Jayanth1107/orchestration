@@ -1,5 +1,9 @@
 package com.orchestration.service;
 
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,8 +73,8 @@ public class OrchestrationServiceImpl implements OrchestrationService {
 				Orchestration orch = new Orchestration();
 				
 				orch.setSourceProcessKey(s.getSourceName()+"-"+p.getProcessName());
-				orch.setSource(s.getSourceName());
-				orch.setProcess(p.getProcessName());
+				orch.setSource(s.getSourceId()+"");
+				orch.setProcess(p.getProcessId()+"");
 				orch.setCount(s.getCount());
 				orch.setStatus("READY");
 				
@@ -99,7 +103,77 @@ public class OrchestrationServiceImpl implements OrchestrationService {
 
 	@Override
 	public String startOrchestration() {
-		return null;
+		
+		int count=0;
+		
+		List<Source> sourceList = sourceRepo.findAll();
+		List<Process> processList = processRepo.findAll();
+		
+		ExecutorService es = Executors.newFixedThreadPool(sourceList.size() * processList.size());
+		
+		for(Source s : sourceList) {
+			for(Process p : processList) {				
+				
+				Runnable r = new Runnable() {
+			
+					@Override
+					public void run() {
+						startAllProcesses(s.getSourceName(), p.getProcessName());
+					}
+				};
+				es.execute(r);
+			}
+		}
+		while(!es.isTerminated()) {
+			
+		}
+		logger.info("End of all the processes");
+		return "End of orchestration";
+	}
+
+	protected void startAllProcesses(String source, String process) {		
+
+		String key = source+"-"+process;
+		String status="";
+		
+		Orchestration current = orchestrationRepo.findOneBySourceProcessKey(key);
+		
+		if(current == null || current.getStatus() == "DONE") return;
+		
+		try {
+		if(current.getPreviousProcess()==null) {
+			logger.info("No Previous process found, initiating sequence with : "+ key);
+		}
+		else {
+			current.setStatus("WAITING");
+			orchestrationRepo.save(current);
+		}
+		}
+		catch(Exception e) {}
+		
+		if(current.getPreviousProcess()!=null)
+		{
+			status = orchestrationRepo.findOneBySourceProcessKey(source+"-"+current.getPreviousProcess()).getStatus();
+			while(status!="DONE") {
+				try {Thread.sleep(10000);}catch(Exception e) {}
+				status = orchestrationRepo.findOneBySourceProcessKey(source+"-"+current.getPreviousProcess()).getStatus();
+			}
+		}
+		
+		logger.info("Starting process : "+key);
+		try {
+			current.setStatus("RUNNING");
+			orchestrationRepo.save(current);
+			Thread.sleep(10000);
+		}
+		catch(Exception e) {
+			
+		}
+		
+		current.setStatus("DONE");
+		orchestrationRepo.save(current);
+		
+		logger.info("End of process : "+key);
 	}
 
 	@Override
