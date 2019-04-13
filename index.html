@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>jQuery get textbox value example</title>
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script>
+	var messageContent = document.getElementById('textarea#message'); 
+
+
+// when local file loaded
+	
+</script>
+<style>
+#message {
+    line-height: 1.4;
+}
+tr, th{
+	background-color: rgb(235, 231, 231);
+	border: 1px thin black;
+    width: auto;
+}
+</style>
+</head>
+
+<body>
+
+<!--<h1>jQuery get textbox value example</h1>-->
+
+<script>
+</script><h2>QA Adjustments<label id="msg"></label></h2>
+
+<div style="padding:16px; text-align: right">
+	<textarea style="width: 50%; height:80%;" id="message" name="message"></textarea>
+</div>
+<div>
+    <table id="result1" style="border: 1px solid slategray">
+        
+	</table>
+</div>
+<div>
+    <table id="result2" style="border: 1px solid slategray">
+        
+	</table>
+</div>
+<script type="text/javascript">
+
+(function($) {
+    
+    //$("#message").ready(function(){
+        //if($('#message').val().length==0){
+                //$('#result1').remove();
+                //$('#result2').remove();
+
+        //}
+    //});
+
+	//$("#message").change(function() {
+    $("#message").bind('input propertychange', function(){
+        const selection1 = ['Y','Y','Y','N','F'];
+        const selection2 = ['Y','Y','Y','Y','N','F'];
+        //var dateRegex = "/^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/";
+        var pattern = new RegExp('/^(\d{1,2})-(\d{1,2})-(\d{4})$/');
+
+        var table = document.getElementById('result1');
+
+        table.innerHTML="";
+
+        var header = document.createElement('thead');
+        var col1 = document.createElement('td');
+        col1.innerHTML='column1';
+        col1.style.borderWidth='1px';
+        var col2 = document.createElement('td');
+        col2.innerHTML='column1';
+        col2.style.borderWidth='1px';
+        var col3 = document.createElement('td');
+        col3.innerHTML='grouping_method';
+        col3.style.borderWidth='1px';
+        var col4 = document.createElement('td');
+        col4.innerHTML='comments_text';
+        col4.style.borderWidth='1px';
+        var col5 = document.createElement('td');
+        col5.innerHTML='mod_date';
+        col5.style.borderWidth='1px';
+        
+        header.style.border='1px thin black';
+        header.style.background="#00ab00";
+
+        header.appendChild(col1);
+        header.appendChild(col2);
+        header.appendChild(col3);
+        header.appendChild(col4);
+        header.appendChild(col5);
+        //table.appendChild(header);
+        table.append(header);
+        
+        var rows = $('#message').val().split('\n');
+
+        for (i=0;i<rows.length;i++){
+
+            var row = document.createElement('tr');
+            var cols = rows[i].split('\t');
+
+            for(j=0;j<cols.length;j++){
+
+                var column = document.createElement('td');
+                column.innerHTML = cols[j];
+                column.style.borderWidth='1px';
+
+                if(cols[j].length==0 && selection1[j]=='Y'){
+                    //console.log(selection1[j]);
+                    column.style.background ='#d48a8a';
+                    column.style.borderWidth='1px';
+                    //$(this).css("background-color", "#ffffff");
+                }
+
+                if(selection1[j]=='F' && !cols[j].match(pattern)){
+                    column.style.background='#d48a8a';
+                    column.style.borderWidth='1px';
+                    //$(this).css("background-color", "#ffffff");
+                }
+
+                row.appendChild(column);
+            }
+
+            table.appendChild(row);
+            //console.log(table);
+            if($('#message').val().length==0){
+                $('#result1').remove();
+            }
+        }
+    });
+
+    $.fn.autogrow = function() {
+        return this.each(function() {
+            var textarea = this;
+            $.fn.autogrow.resize(textarea);
+            $(textarea).focus(function() {
+                textarea.interval = setInterval(function() {
+                    $.fn.autogrow.resize(textarea);
+                }, 500);
+            }).blur(function() {
+                clearInterval(textarea.interval);
+            });
+        });
+    };
+    $.fn.autogrow.resize = function(textarea) {
+        var lineHeight = parseInt($(textarea).css('line-height'), 10);
+        var lines = textarea.value.split('\n');
+        var columns = textarea.cols;
+        var lineCount = 0;
+        $.each(lines, function() {
+            lineCount += Math.ceil(this.length / columns) || 1;
+        });
+        var height = lineHeight * (lineCount + 1);
+        $(textarea).css('height', height);
+    };
+})(jQuery);
+
+$('#message').autogrow();
+
+    $("button:#Get").click(function () {
+		
+	$('#msg').html($('textarea#message').val());
+		
+    });
+	
+    $("button:#Reset").click(function () {
+		
+	$('#msg').html("");
+	$('textarea#message').val("");
+		
+    });
+	
+    $("button:#Set").click(function () {
+		
+	$('textarea#message').val("ABC");
+	$('#msg').html($('input:textbox').val());
+		
+    });
+	
+</script>
+
+</body>
+</html>
