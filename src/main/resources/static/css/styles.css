@@ -1,0 +1,63 @@
+#message {
+	align-items: center;
+}
+
+textarea {
+	width: 200px;
+	height: 200px;
+}
+
+#textareaDiv {
+	align-content: center;
+}
+
+td {
+	background-color: rgb(235, 231, 231);
+	border: 1px thin black;
+	width: auto;
+	border: 1px solid slategray;
+}
+
+thead {
+	font-weight: bold;
+	border: '1px thin black';
+	background: #252b35;
+	color: #ffffff;
+}
+
+thead td {
+	border-width: 1px;
+	background: #454950;
+}
+
+.hoverdisplay {
+	position: relative;
+	/* display: inline-block; */
+	/* border-bottom: 1px dotted black; */
+}
+
+.hoverdisplay .missingfield, .hoverdisplay .dateformat {
+	visibility: hidden;
+	width: auto;
+	font-weight: bolder;
+	background-color: #ffffff;
+	color: #000000;
+	text-align: center;
+	border-radius: 1px;
+	padding: 5px 2px 1px 1px;
+	transition: .25s ease-out;
+	opacity: 0;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+}
+
+.hoverdisplay:hover .missingfield {
+	visibility: visible;
+	opacity: 1;
+}
+
+.hoverdisplay:hover .dateformat {
+	visibility: visible;
+	opacity: 1;
+}

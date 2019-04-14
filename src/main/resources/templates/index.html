@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Account Grouping QA Adjustments</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"></link>
+</head>
+
+<body>
+
+    <!--<h1>jQuery get textbox value example</h1>-->
+
+    <h2>QA Adjustments<label id="msg"></label></h2>
+<!-- 
+    <p th:text="${T(com.orchestration.controller.HomeController).variedText}">Static content</p> -->
+
+    <div style="display: inline-flex; width: 100%; margin: 0; padding: 0; top: 0; left:0; right: 0;">
+        <div id="textareaDiv"
+             style="width: 25%;">
+            <form id="scriptsform">
+                <textarea id="message"
+                          name="message"></textarea>
+                <input type="submit" value="execute"></input>
+            </form>
+
+            <div id='response'></div>
+        </div>
+        <div id="result1div"
+             style="width: 70%;">
+            <table id="result1"
+                   style="width: 100%;">
+            </table>
+        </div>
+        <div id="result2div"
+             style="display:none; width: 70%">
+            <table id="result2"
+                   style="border: 1px solid slategray;">
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
